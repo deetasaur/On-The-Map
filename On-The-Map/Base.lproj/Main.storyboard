@@ -300,7 +300,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <items>
                                     <barButtonItem width="96" style="plain" systemItem="fixedSpace" id="cSp-up-raC"/>
-                                    <barButtonItem image="Map" id="1CK-oQ-1Gv"/>
+                                    <barButtonItem image="Map" id="1CK-oQ-1Gv">
+                                        <connections>
+                                            <segue destination="JNb-aO-3KI" kind="show" id="7eJ-vP-Z2d"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem width="96" style="plain" systemItem="fixedSpace" id="FBD-BB-xxx"/>
                                     <barButtonItem image="List" id="ooz-0w-V6F"/>
                                     <barButtonItem width="96" style="plain" systemItem="fixedSpace" id="DB3-Wo-NRN"/>
@@ -309,7 +313,7 @@
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X6T-Rt-rG8">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <items>
-                                    <navigationItem title="Title" id="8IJ-Ji-a6E"/>
+                                    <navigationItem title="On The Map" id="8IJ-Ji-a6E"/>
                                 </items>
                             </navigationBar>
                         </subviews>
@@ -355,6 +359,97 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="06Q-0S-fFC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1014" y="387"/>
+        </scene>
+        <!--Map Tabbed View Controller-->
+        <scene sceneID="yW2-0X-EH1">
+            <objects>
+                <viewController storyboardIdentifier="MapTabbedViewController" id="JNb-aO-3KI" customClass="MapTabbedViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0wy-8U-0et"/>
+                        <viewControllerLayoutGuide type="bottom" id="nbt-VA-vyS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EIj-4W-TBx">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mfM-dm-PLM">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <items>
+                                    <barButtonItem width="96" style="plain" systemItem="fixedSpace" id="QuO-fe-PZT"/>
+                                    <barButtonItem image="Map" id="ezN-Ro-scs"/>
+                                    <barButtonItem width="96" style="plain" systemItem="fixedSpace" id="exs-gY-rIS"/>
+                                    <barButtonItem image="List" id="lWn-hH-xsL"/>
+                                    <barButtonItem width="96" style="plain" systemItem="fixedSpace" id="MaT-1n-PdX"/>
+                                </items>
+                            </toolbar>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XI8-ki-9Wl">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <items>
+                                    <navigationItem title="On The Map" id="bRs-rU-qBH"/>
+                                </items>
+                            </navigationBar>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="eBk-yv-AkG">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="eBk-yv-AkG" firstAttribute="top" secondItem="XI8-ki-9Wl" secondAttribute="bottom" id="3c8-M8-3Jk"/>
+                            <constraint firstItem="eBk-yv-AkG" firstAttribute="trailing" secondItem="XI8-ki-9Wl" secondAttribute="trailing" id="8ve-CO-LrY"/>
+                            <constraint firstItem="mfM-dm-PLM" firstAttribute="bottom" secondItem="nbt-VA-vyS" secondAttribute="top" id="BEP-pw-Aod"/>
+                            <constraint firstItem="eBk-yv-AkG" firstAttribute="leading" secondItem="XI8-ki-9Wl" secondAttribute="leading" id="IWB-2y-Hd3"/>
+                            <constraint firstItem="XI8-ki-9Wl" firstAttribute="trailing" secondItem="mfM-dm-PLM" secondAttribute="trailing" id="Vq6-gE-i6b"/>
+                            <constraint firstItem="XI8-ki-9Wl" firstAttribute="top" secondItem="0wy-8U-0et" secondAttribute="bottom" id="Vw0-uq-nfa"/>
+                            <constraint firstItem="eBk-yv-AkG" firstAttribute="bottom" secondItem="mfM-dm-PLM" secondAttribute="top" id="ZdC-gb-aMc"/>
+                            <constraint firstItem="mfM-dm-PLM" firstAttribute="leading" secondItem="EIj-4W-TBx" secondAttribute="leading" id="nG5-GY-1fN"/>
+                            <constraint firstAttribute="trailing" secondItem="mfM-dm-PLM" secondAttribute="trailing" id="wou-zH-BFe"/>
+                            <constraint firstItem="XI8-ki-9Wl" firstAttribute="leading" secondItem="mfM-dm-PLM" secondAttribute="leading" id="zuN-n5-qwT"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="mfM-dm-PLM"/>
+                                <exclude reference="XI8-ki-9Wl"/>
+                                <exclude reference="eBk-yv-AkG"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="Vq6-gE-i6b"/>
+                                <exclude reference="Vw0-uq-nfa"/>
+                                <exclude reference="zuN-n5-qwT"/>
+                                <exclude reference="3c8-M8-3Jk"/>
+                                <exclude reference="8ve-CO-LrY"/>
+                                <exclude reference="IWB-2y-Hd3"/>
+                                <exclude reference="ZdC-gb-aMc"/>
+                                <exclude reference="BEP-pw-Aod"/>
+                                <exclude reference="nG5-GY-1fN"/>
+                                <exclude reference="wou-zH-BFe"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="mfM-dm-PLM"/>
+                                <include reference="XI8-ki-9Wl"/>
+                                <include reference="eBk-yv-AkG"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="Vq6-gE-i6b"/>
+                                <include reference="Vw0-uq-nfa"/>
+                                <include reference="zuN-n5-qwT"/>
+                                <include reference="3c8-M8-3Jk"/>
+                                <include reference="8ve-CO-LrY"/>
+                                <include reference="IWB-2y-Hd3"/>
+                                <include reference="ZdC-gb-aMc"/>
+                                <include reference="BEP-pw-Aod"/>
+                                <include reference="nG5-GY-1fN"/>
+                                <include reference="wou-zH-BFe"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="mapView" destination="eBk-yv-AkG" id="CpW-0J-leL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fxQ-Hl-yKm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1875" y="30"/>
         </scene>
     </scenes>
     <resources>

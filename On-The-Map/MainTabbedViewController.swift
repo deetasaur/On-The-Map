@@ -10,4 +10,8 @@ import UIKit
 
 class MainTabbedViewController: UIViewController {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
 }
