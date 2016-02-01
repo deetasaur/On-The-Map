@@ -12,6 +12,7 @@
 		B35F34401C5D1AB800B50885 /* TableTabbedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35F343F1C5D1AB800B50885 /* TableTabbedViewController.swift */; };
 		B35F34421C5D1ACD00B50885 /* MapTabbedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35F34411C5D1ACD00B50885 /* MapTabbedViewController.swift */; };
 		B35F34441C5D1AE300B50885 /* InfoPostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35F34431C5D1AE300B50885 /* InfoPostingViewController.swift */; };
+		B36016991C5FDA8600848B43 /* StudentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36016981C5FDA8600848B43 /* StudentLocation.swift */; };
 		B380E60C1C59675B00C287E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B380E60B1C59675B00C287E2 /* AppDelegate.swift */; };
 		B380E60E1C59675B00C287E2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B380E60D1C59675B00C287E2 /* ViewController.swift */; };
 		B380E6111C59675B00C287E2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B380E60F1C59675B00C287E2 /* Main.storyboard */; };
@@ -44,6 +45,7 @@
 		B35F343F1C5D1AB800B50885 /* TableTabbedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableTabbedViewController.swift; sourceTree = "<group>"; };
 		B35F34411C5D1ACD00B50885 /* MapTabbedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTabbedViewController.swift; sourceTree = "<group>"; };
 		B35F34431C5D1AE300B50885 /* InfoPostingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoPostingViewController.swift; sourceTree = "<group>"; };
+		B36016981C5FDA8600848B43 /* StudentLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocation.swift; sourceTree = "<group>"; };
 		B380E6081C59675B00C287E2 /* On-The-Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On-The-Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B380E60B1C59675B00C287E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B380E60D1C59675B00C287E2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				B380E6121C59675B00C287E2 /* Assets.xcassets */,
 				B380E6141C59675B00C287E2 /* LaunchScreen.storyboard */,
 				B380E6171C59675B00C287E2 /* Info.plist */,
+				B36016981C5FDA8600848B43 /* StudentLocation.swift */,
 			);
 			path = "On-The-Map";
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B36016991C5FDA8600848B43 /* StudentLocation.swift in Sources */,
 				B35F34401C5D1AB800B50885 /* TableTabbedViewController.swift in Sources */,
 				B31A53421C5D0EC200F16565 /* LoginViewController.swift in Sources */,
 				B380E60E1C59675B00C287E2 /* ViewController.swift in Sources */,

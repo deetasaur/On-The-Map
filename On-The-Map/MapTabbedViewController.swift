@@ -15,13 +15,23 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
     // is set up as the map view's delegate.
     @IBOutlet weak var mapView: MKMapView!
     
+    var appDelegate: AppDelegate!
+    var results: [StudentLocation] = [StudentLocation]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /* Get the app delegate */
+        appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        
         // The "locations" array is an array of dictionary objects that are similar to the JSON
         // data that you can download from parse.
-        let locations = hardCodedLocationData()
-        
+        //let locations = hardCodedLocationData()
+        let locations = getStudentLocations()
+        print("***************")
+        print(locations)
+        print("***************")
+
         // We will create an MKPointAnnotation for each dictionary in "locations". The
         // point annotations will be stored in this array, and then provided to the map view.
         var annotations = [MKPointAnnotation]()
@@ -59,7 +69,7 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         
     }
     
-    // MARK: - MKMapViewDelegate
+    // MKMapViewDelegate
     
     // Here we create a view with a "right callout accessory view". You might choose to look into other
     // decoration alternatives. Notice the similarity between this method and the cellForRowAtIndexPath
@@ -73,7 +83,7 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView!.canShowCallout = true
-            pinView!.pinColor = .Red
+            pinView!.pinTintColor = UIColor.redColor()
             pinView!.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)
         }
         else {
@@ -93,6 +103,65 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
                 app.openURL(NSURL(string: toOpen)!)
             }
         }
+    }
+    
+    func getStudentLocations() -> [StudentLocation] {
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation")!)
+        request.addValue(appDelegate.parseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(appDelegate.restApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            /* GUARD: Was there an error? */
+            guard (error == nil) else {
+                dispatch_async(dispatch_get_main_queue()) {
+                }
+                print("There was an error with your request: \(error)")
+                return
+            }
+            
+            /* GUARD: Did we get a successful 2XX response? */
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                dispatch_async(dispatch_get_main_queue()) {
+                }
+                if let response = response as? NSHTTPURLResponse {
+                    print("Your request returned an invalid response! Status code: \(response.statusCode)!")
+                } else if let response = response {
+                    print("Your request returned an invalid response! Response: \(response)!")
+                } else {
+                    print("Your request returned an invalid response!")
+                }
+                return
+            }
+            
+            /* GUARD: Was there any data returned? */
+            guard let data = data else {
+                dispatch_async(dispatch_get_main_queue()) {
+                }
+                print("No data was returned by the request!")
+                return
+            }
+            
+            let parsedResult: AnyObject!
+            do {
+                parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+            } catch {
+                print("Could not parse the data as JSON: '\(data)'")
+                return
+            }
+            
+            guard let resultsDictionary = parsedResult["results"] as? [[String : AnyObject]] else {
+                print("Cannot find key 'results' in \(parsedResult)")
+                return
+            }
+            
+            self.results = StudentLocation.locationsFromResults(resultsDictionary)
+            
+            //parsedResult = NSString(data: data, encoding: NSUTF8StringEncoding)!
+            print("RESULTS: \(self.results)")
+        }
+        print("RESULTS 2: \(self.results)")
+        task.resume()
+        return self.results
     }
   
     func hardCodedLocationData() -> [[String : AnyObject]] {

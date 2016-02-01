@@ -8,6 +8,6 @@
 
 import UIKit
 
-class TableTabbedViewController: UIViewController {
+class TableTabbedViewController: UITableViewController {
     
 }
