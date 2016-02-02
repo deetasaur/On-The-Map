@@ -43,7 +43,15 @@ class LoginViewController: UIViewController {
             print("Password can't be empty")
             return
         } else {
-            getSessionID()
+            //getSessionID()
+            OTMClient.sharedInstance().authenticateWithViewController(emailTextField.text!, password: pwdTextFIeld.text!, hostViewController: self) { (success, errorString) in
+                if success {
+                    print("Success Authentication")
+                    self.completeLogin()
+                } else {
+                    print("Failed Authentication")
+                }
+            }
         }
     }
     
@@ -97,7 +105,7 @@ class LoginViewController: UIViewController {
 
             let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5)) /* subset response data! */
             let parsedResult = NSString(data: newData, encoding: NSUTF8StringEncoding)
-            print(parsedResult)
+            //print(parsedResult)
             self.completeLogin()
         }
         task.resume()

@@ -13,6 +13,12 @@
 		B35F34421C5D1ACD00B50885 /* MapTabbedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35F34411C5D1ACD00B50885 /* MapTabbedViewController.swift */; };
 		B35F34441C5D1AE300B50885 /* InfoPostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35F34431C5D1AE300B50885 /* InfoPostingViewController.swift */; };
 		B36016991C5FDA8600848B43 /* StudentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36016981C5FDA8600848B43 /* StudentLocation.swift */; };
+		B360169F1C60DA7E00848B43 /* OTMConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B360169E1C60DA7E00848B43 /* OTMConstants.swift */; };
+		B36016A11C60DA8B00848B43 /* OTMConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36016A01C60DA8B00848B43 /* OTMConvenience.swift */; };
+		B36016A31C60DA9200848B43 /* OTMClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36016A21C60DA9200848B43 /* OTMClient.swift */; };
+		B36016A51C60DA9F00848B43 /* OTMAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36016A41C60DA9F00848B43 /* OTMAuthViewController.swift */; };
+		B36016A71C60DAA800848B43 /* OTMConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36016A61C60DAA800848B43 /* OTMConfig.swift */; };
+		B36016A91C60DABF00848B43 /* OTMStudentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36016A81C60DABF00848B43 /* OTMStudentLocation.swift */; };
 		B380E60C1C59675B00C287E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B380E60B1C59675B00C287E2 /* AppDelegate.swift */; };
 		B380E60E1C59675B00C287E2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B380E60D1C59675B00C287E2 /* ViewController.swift */; };
 		B380E6111C59675B00C287E2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B380E60F1C59675B00C287E2 /* Main.storyboard */; };
@@ -46,6 +52,12 @@
 		B35F34411C5D1ACD00B50885 /* MapTabbedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTabbedViewController.swift; sourceTree = "<group>"; };
 		B35F34431C5D1AE300B50885 /* InfoPostingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoPostingViewController.swift; sourceTree = "<group>"; };
 		B36016981C5FDA8600848B43 /* StudentLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocation.swift; sourceTree = "<group>"; };
+		B360169E1C60DA7E00848B43 /* OTMConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMConstants.swift; sourceTree = "<group>"; };
+		B36016A01C60DA8B00848B43 /* OTMConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMConvenience.swift; sourceTree = "<group>"; };
+		B36016A21C60DA9200848B43 /* OTMClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMClient.swift; sourceTree = "<group>"; };
+		B36016A41C60DA9F00848B43 /* OTMAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMAuthViewController.swift; sourceTree = "<group>"; };
+		B36016A61C60DAA800848B43 /* OTMConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMConfig.swift; sourceTree = "<group>"; };
+		B36016A81C60DABF00848B43 /* OTMStudentLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMStudentLocation.swift; sourceTree = "<group>"; };
 		B380E6081C59675B00C287E2 /* On-The-Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On-The-Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B380E60B1C59675B00C287E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B380E60D1C59675B00C287E2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -98,11 +110,33 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
-		B35F34381C5D17CA00B50885 /* Model */ = {
+		B360169B1C60DA4B00848B43 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B360169C1C60DA5C00848B43 /* Clients */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		B360169C1C60DA5C00848B43 /* Clients */ = {
+			isa = PBXGroup;
+			children = (
+				B360169D1C60DA6700848B43 /* OTM */,
+			);
+			name = Clients;
+			sourceTree = "<group>";
+		};
+		B360169D1C60DA6700848B43 /* OTM */ = {
+			isa = PBXGroup;
+			children = (
+				B360169E1C60DA7E00848B43 /* OTMConstants.swift */,
+				B36016A01C60DA8B00848B43 /* OTMConvenience.swift */,
+				B36016A21C60DA9200848B43 /* OTMClient.swift */,
+				B36016A41C60DA9F00848B43 /* OTMAuthViewController.swift */,
+				B36016A61C60DAA800848B43 /* OTMConfig.swift */,
+				B36016A81C60DABF00848B43 /* OTMStudentLocation.swift */,
+			);
+			name = OTM;
 			sourceTree = "<group>";
 		};
 		B380E5FF1C59675B00C287E2 = {
@@ -128,7 +162,7 @@
 		B380E60A1C59675B00C287E2 /* On-The-Map */ = {
 			isa = PBXGroup;
 			children = (
-				B35F34381C5D17CA00B50885 /* Model */,
+				B360169B1C60DA4B00848B43 /* Model */,
 				B31A53401C5D0EAD00F16565 /* Controller */,
 				B380E60B1C59675B00C287E2 /* AppDelegate.swift */,
 				B380E60D1C59675B00C287E2 /* ViewController.swift */,
@@ -290,12 +324,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B36016A11C60DA8B00848B43 /* OTMConvenience.swift in Sources */,
 				B36016991C5FDA8600848B43 /* StudentLocation.swift in Sources */,
 				B35F34401C5D1AB800B50885 /* TableTabbedViewController.swift in Sources */,
+				B36016A71C60DAA800848B43 /* OTMConfig.swift in Sources */,
+				B36016A51C60DA9F00848B43 /* OTMAuthViewController.swift in Sources */,
 				B31A53421C5D0EC200F16565 /* LoginViewController.swift in Sources */,
 				B380E60E1C59675B00C287E2 /* ViewController.swift in Sources */,
+				B36016A31C60DA9200848B43 /* OTMClient.swift in Sources */,
 				B35F34421C5D1ACD00B50885 /* MapTabbedViewController.swift in Sources */,
+				B36016A91C60DABF00848B43 /* OTMStudentLocation.swift in Sources */,
 				B380E60C1C59675B00C287E2 /* AppDelegate.swift in Sources */,
+				B360169F1C60DA7E00848B43 /* OTMConstants.swift in Sources */,
 				B35F34441C5D1AE300B50885 /* InfoPostingViewController.swift in Sources */,
 				B35F343C1C5D1A8E00B50885 /* MainTabbedViewController.swift in Sources */,
 			);

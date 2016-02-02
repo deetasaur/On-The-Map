@@ -16,7 +16,9 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     var appDelegate: AppDelegate!
-    var results: [StudentLocation] = [StudentLocation]()
+    //var results: [StudentLocation] = [StudentLocation]()
+    var results : [[String : AnyObject]] = [[String : AnyObject]]()
+    var locations : [[String : AnyObject]] = [[String : AnyObject]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,10 +29,12 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         // The "locations" array is an array of dictionary objects that are similar to the JSON
         // data that you can download from parse.
         //let locations = hardCodedLocationData()
-        let locations = getStudentLocations()
-        print("***************")
-        print(locations)
-        print("***************")
+        getStudentLocations({ (data, response, error) in
+            self.locations = self.results
+            print("***************")
+            print(self.locations)
+            print("***************")
+        })
 
         // We will create an MKPointAnnotation for each dictionary in "locations". The
         // point annotations will be stored in this array, and then provided to the map view.
@@ -105,8 +109,8 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    func getStudentLocations() -> [StudentLocation] {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation")!)
+    func getStudentLocations(completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) {
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation?limit=100")!)
         request.addValue(appDelegate.parseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(appDelegate.restApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         let session = NSURLSession.sharedSession()
@@ -154,14 +158,13 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
                 return
             }
             
-            self.results = StudentLocation.locationsFromResults(resultsDictionary)
+            self.results = resultsDictionary
             
             //parsedResult = NSString(data: data, encoding: NSUTF8StringEncoding)!
-            print("RESULTS: \(self.results)")
         }
-        print("RESULTS 2: \(self.results)")
         task.resume()
-        return self.results
+
+        //return self.results
     }
   
     func hardCodedLocationData() -> [[String : AnyObject]] {
