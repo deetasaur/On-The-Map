@@ -16,9 +16,7 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     var appDelegate: AppDelegate!
-    //var results: [StudentLocation] = [StudentLocation]()
-    var results : [[String : AnyObject]] = [[String : AnyObject]]()
-    var locations : [[String : AnyObject]] = [[String : AnyObject]]()
+    var locations : [OTMStudentLocation] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,13 +27,22 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         // The "locations" array is an array of dictionary objects that are similar to the JSON
         // data that you can download from parse.
         //let locations = hardCodedLocationData()
-        getStudentLocations({ (data, response, error) in
-            self.locations = self.results
-            print("***************")
-            print(self.locations)
-            print("***************")
-        })
-
+        OTMClient.sharedInstance().getStudentLocations() { (results, errorString) in
+            if(results != nil) {
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.locations = results!
+                    self.setMapLocation()
+                    print("Got student locations")
+                }
+            } else {
+                print("Didn't get student locations")
+            }
+        }        
+    }
+    
+    func setMapLocation() {
+        print("Still got student locations in \(self.locations)")
+        
         // We will create an MKPointAnnotation for each dictionary in "locations". The
         // point annotations will be stored in this array, and then provided to the map view.
         var annotations = [MKPointAnnotation]()
@@ -44,19 +51,27 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         // to create map annotations. This would be more stylish if the dictionaries were being
         // used to create custom structs. Perhaps StudentLocation structs.
         
-        for dictionary in locations {
-            
+        for location in locations {
+            print("Enter for loop")
             // Notice that the float values are being used to create CLLocationDegree values.
             // This is a version of the Double type.
-            let lat = CLLocationDegrees(dictionary["latitude"] as! Double)
-            let long = CLLocationDegrees(dictionary["longitude"] as! Double)
+            
+            print("Dictionary Values:")
+            print("Latitude: \(location.latitude)")
+            print("Longitude: \(location.longitude)")
+            print("Firstname: \(location.firstName)")
+            print("Lastname: \(location.lastName)")
+            print("MediaURL: \(location.mediaURL)")
+            
+            let lat = CLLocationDegrees(location.latitude)
+            let long = CLLocationDegrees(location.latitude)
             
             // The lat and long are used to create a CLLocationCoordinates2D instance.
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
             
-            let first = dictionary["firstName"] as! String
-            let last = dictionary["lastName"] as! String
-            let mediaURL = dictionary["mediaURL"] as! String
+            let first = location.firstName!
+            let last = location.lastName!
+            let mediaURL = location.mediaURL!
             
             // Here we create the annotation and set its coordiate, title, and subtitle properties
             let annotation = MKPointAnnotation()
@@ -70,7 +85,6 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         
         // When the array is complete, we add the annotations to the map.
         self.mapView.addAnnotations(annotations)
-        
     }
     
     // MKMapViewDelegate
@@ -109,63 +123,7 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    func getStudentLocations(completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation?limit=100")!)
-        request.addValue(appDelegate.parseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
-        request.addValue(appDelegate.restApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { data, response, error in
-            /* GUARD: Was there an error? */
-            guard (error == nil) else {
-                dispatch_async(dispatch_get_main_queue()) {
-                }
-                print("There was an error with your request: \(error)")
-                return
-            }
-            
-            /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                dispatch_async(dispatch_get_main_queue()) {
-                }
-                if let response = response as? NSHTTPURLResponse {
-                    print("Your request returned an invalid response! Status code: \(response.statusCode)!")
-                } else if let response = response {
-                    print("Your request returned an invalid response! Response: \(response)!")
-                } else {
-                    print("Your request returned an invalid response!")
-                }
-                return
-            }
-            
-            /* GUARD: Was there any data returned? */
-            guard let data = data else {
-                dispatch_async(dispatch_get_main_queue()) {
-                }
-                print("No data was returned by the request!")
-                return
-            }
-            
-            let parsedResult: AnyObject!
-            do {
-                parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-            } catch {
-                print("Could not parse the data as JSON: '\(data)'")
-                return
-            }
-            
-            guard let resultsDictionary = parsedResult["results"] as? [[String : AnyObject]] else {
-                print("Cannot find key 'results' in \(parsedResult)")
-                return
-            }
-            
-            self.results = resultsDictionary
-            
-            //parsedResult = NSString(data: data, encoding: NSUTF8StringEncoding)!
-        }
-        task.resume()
-
-        //return self.results
-    }
+    
   
     func hardCodedLocationData() -> [[String : AnyObject]] {
         return  [

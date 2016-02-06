@@ -10,25 +10,14 @@
 import UIKit
 import Foundation
 
-// MARK: - TMDBClient (Convenient Resource Methods)
+// OTMClient (Convenient Resource Methods)
 
 extension OTMClient {
     
-    // MARK: Authentication (GET) Methods
-    /*
-    Steps for Authentication...
-    https://www.themoviedb.org/documentation/api/sessions
-    
-    Step 1: Create a new request token
-    Step 2a: Ask the user for permission via the website
-    Step 3: Create a session ID
-    Bonus Step: Go ahead and get the user id 😎!
-    */
+    // Authentication (GET) Methods
     func authenticateWithViewController(username: String?, password: String?, hostViewController: UIViewController, completionHandler: (success: Bool, errorString: String?) -> Void) {
         self.getSessionID(username, password: password) { (success, errorString) in
             if success {
-                /* Success! We have the sessionID! */
-                print("Found session ID")
                 completionHandler(success: success, errorString: errorString)
             } else {
                 completionHandler(success: success, errorString: errorString)
@@ -39,11 +28,17 @@ extension OTMClient {
     func getSessionID(username: String?, password: String?, completionHandler: (success: Bool, errorString: String?) -> Void) {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
-        let parameters = [OTMClient.ParameterKeys.username : username!,
-                          OTMClient.ParameterKeys.password : password!]
+        let jsonBody : [String:AnyObject] = [
+            OTMClient.JSONBodyKeys.udacity: [
+                OTMClient.JSONBodyKeys.username: "\(username!)",
+                OTMClient.JSONBodyKeys.password: "\(password!)"
+            ]
+        ]
+        
+        let url = OTMClient.Constants.baseURLSecureString + OTMClient.Methods.udacityPostSession
         
         /* 2. Make the request */
-        taskForPOSTMethod("", parameters: parameters, jsonBody: [String:AnyObject]()) { JSONResult, error in
+        taskForPOSTMethod("udacity", urlString: url, jsonBody: jsonBody) { JSONResult, error in
             
             /* 3. Send the desired value(s) to completion handler */
             if let error = error {
@@ -54,5 +49,33 @@ extension OTMClient {
                 completionHandler(success: true, errorString: nil)
             }
         }
+    }
+    
+    func getStudentLocations(completionHandler: (results: [OTMStudentLocation]?, errorString: String?) -> Void) {
+        
+        let parameters: [String: AnyObject] = [
+            OTMClient.ParameterKeys.limit: 100,
+            OTMClient.ParameterKeys.skip: 400,
+            OTMClient.ParameterKeys.order: "updatedAt"
+        ]
+        
+        let url = OTMClient.Constants.baseParseSecureURL + OTMClient.Methods.parseStudentLocation
+        
+        taskForGETMethod("parse", urlString: url, parameters: parameters) { JSONResult, error in
+            if let error = error {
+                print(error)
+                completionHandler(results: nil, errorString: "Getting student locations failed")
+            } else {
+                print("Found student locations")
+                if let locations = JSONResult[OTMClient.JSONResponseKeys.locationResults] as? [[String: AnyObject]] {
+                    var studentLocations = OTMStudentLocation.sharedInstance
+                    studentLocations.studentLocationList = OTMStudentLocation.locationsFromResults(locations)
+                    completionHandler(results: studentLocations.studentLocationList, errorString: nil)
+                } else {
+                    completionHandler(results: nil, errorString: "JSONResult was empty")
+                }
+            }
+        }
+
     }
 }
