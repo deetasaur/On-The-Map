@@ -23,6 +23,7 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         
         /* Get the app delegate */
         appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        mapView.delegate = self
         
         // The "locations" array is an array of dictionary objects that are similar to the JSON
         // data that you can download from parse.
@@ -30,9 +31,9 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         OTMClient.sharedInstance().getStudentLocations() { (results, errorString) in
             if(results != nil) {
                 dispatch_async(dispatch_get_main_queue()) {
+                    print("Got student locations")
                     self.locations = results!
                     self.setMapLocation()
-                    print("Got student locations")
                 }
             } else {
                 print("Didn't get student locations")
@@ -41,7 +42,7 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
     }
     
     func setMapLocation() {
-        print("Still got student locations in \(self.locations)")
+        print("Beginning Annotation Count: \(self.mapView.annotations.count))")
         
         // We will create an MKPointAnnotation for each dictionary in "locations". The
         // point annotations will be stored in this array, and then provided to the map view.
@@ -52,26 +53,17 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         // used to create custom structs. Perhaps StudentLocation structs.
         
         for location in locations {
-            print("Enter for loop")
             // Notice that the float values are being used to create CLLocationDegree values.
             // This is a version of the Double type.
-            
-            print("Dictionary Values:")
-            print("Latitude: \(location.latitude)")
-            print("Longitude: \(location.longitude)")
-            print("Firstname: \(location.firstName)")
-            print("Lastname: \(location.lastName)")
-            print("MediaURL: \(location.mediaURL)")
-            
-            let lat = CLLocationDegrees(location.latitude)
-            let long = CLLocationDegrees(location.latitude)
+            let lat = CLLocationDegrees(location.latitude! as Float)
+            let long = CLLocationDegrees(location.latitude! as Float)
             
             // The lat and long are used to create a CLLocationCoordinates2D instance.
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
             
-            let first = location.firstName!
-            let last = location.lastName!
-            let mediaURL = location.mediaURL!
+            let first = location.firstName! as String
+            let last = location.lastName! as String
+            let mediaURL = location.mediaURL! as String
             
             // Here we create the annotation and set its coordiate, title, and subtitle properties
             let annotation = MKPointAnnotation()
@@ -81,10 +73,18 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
             
             // Finally we place the annotation in an array of annotations.
             annotations.append(annotation)
+            print("            ")
+            print("--Dictionary Values--")
+            print("Latitude: \(lat)")
+            print("Longitude: \(long)")
+            print("Firstname: \(first)")
+            print("Lastname: \(last)")
+            print("MediaURL: \(mediaURL)")
         }
         
         // When the array is complete, we add the annotations to the map.
         self.mapView.addAnnotations(annotations)
+        print("Ending Annotation Count: \(self.mapView.annotations.count))")
     }
     
     // MKMapViewDelegate
