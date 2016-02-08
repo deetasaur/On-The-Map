@@ -11,8 +11,8 @@ struct OTMStudentLocation {
     var createdAt: String? = nil
     var firstName: String? = nil
     var lastName: String? = nil
-    var latitude: Float?
-    var longitude: Float?
+    var latitude: Double?
+    var longitude: Double?
     var mapString: String? = nil
     var mediaURL: String? = nil
     var objectId: String? = nil
@@ -45,8 +45,8 @@ struct OTMStudentLocation {
         updatedAt = dictionary[OTMClient.JSONResponseKeys.updatedAt] as? String
         uniqueKey = dictionary[OTMClient.JSONResponseKeys.uniqueKey] as? String
 
-        latitude  = dictionary[OTMClient.JSONResponseKeys.latitude] as? Float
-        longitude = dictionary[OTMClient.JSONResponseKeys.longitude] as? Float
+        latitude  = dictionary[OTMClient.JSONResponseKeys.latitude] as? Double
+        longitude = dictionary[OTMClient.JSONResponseKeys.longitude] as? Double
     }
     
     /* Helper: Given an array of dictionaries, convert them to an array of OTMStudentLocation objects */

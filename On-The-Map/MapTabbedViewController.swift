@@ -15,34 +15,37 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
     // is set up as the map view's delegate.
     @IBOutlet weak var mapView: MKMapView!
     
-    var appDelegate: AppDelegate!
     var locations : [OTMStudentLocation] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        getMapLocations()
+    }
+    
+    func refresh() {
+        for annotation : MKAnnotation in mapView.annotations {
+            mapView.removeAnnotation(annotation)
+        }
+        getMapLocations()
+    }
+    
+    func getMapLocations() {
         
-        /* Get the app delegate */
-        appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        mapView.delegate = self
-        
-        // The "locations" array is an array of dictionary objects that are similar to the JSON
-        // data that you can download from parse.
-        //let locations = hardCodedLocationData()
         OTMClient.sharedInstance().getStudentLocations() { (results, errorString) in
             if(results != nil) {
                 dispatch_async(dispatch_get_main_queue()) {
-                    print("Got student locations")
                     self.locations = results!
-                    self.setMapLocation()
+                    self.setMapLocations()
+                    print("Total map annotations: \(self.mapView.annotations.count)")
                 }
             } else {
                 print("Didn't get student locations")
             }
-        }        
+        }
     }
     
-    func setMapLocation() {
-        print("Beginning Annotation Count: \(self.mapView.annotations.count))")
+    func setMapLocations() {
+        print("Beginning Annotation Count: \(self.mapView.annotations.count)")
         
         // We will create an MKPointAnnotation for each dictionary in "locations". The
         // point annotations will be stored in this array, and then provided to the map view.
@@ -55,8 +58,8 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         for location in locations {
             // Notice that the float values are being used to create CLLocationDegree values.
             // This is a version of the Double type.
-            let lat = CLLocationDegrees(location.latitude! as Float)
-            let long = CLLocationDegrees(location.latitude! as Float)
+            let lat = CLLocationDegrees(location.latitude! as Double)
+            let long = CLLocationDegrees(location.longitude! as Double)
             
             // The lat and long are used to create a CLLocationCoordinates2D instance.
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
@@ -73,6 +76,8 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
             
             // Finally we place the annotation in an array of annotations.
             annotations.append(annotation)
+            
+            /*
             print("            ")
             print("--Dictionary Values--")
             print("Latitude: \(lat)")
@@ -80,11 +85,13 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
             print("Firstname: \(first)")
             print("Lastname: \(last)")
             print("MediaURL: \(mediaURL)")
+            */
         }
         
+        self.mapView.delegate = self
         // When the array is complete, we add the annotations to the map.
         self.mapView.addAnnotations(annotations)
-        print("Ending Annotation Count: \(self.mapView.annotations.count))")
+        print("Ending Annotation Count: \(self.mapView.annotations.count)")
     }
     
     // MKMapViewDelegate
@@ -96,7 +103,7 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         
         let reuseId = "pin"
         
-        var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
+        var pinView = self.mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
         
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
