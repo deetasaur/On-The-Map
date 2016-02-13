@@ -36,7 +36,6 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
                 dispatch_async(dispatch_get_main_queue()) {
                     self.locations = results!
                     self.setMapLocations()
-                    print("Total map annotations: \(self.mapView.annotations.count)")
                 }
             } else {
                 print("Didn't get student locations")
@@ -45,7 +44,6 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
     }
     
     func setMapLocations() {
-        print("Beginning Annotation Count: \(self.mapView.annotations.count)")
         
         // We will create an MKPointAnnotation for each dictionary in "locations". The
         // point annotations will be stored in this array, and then provided to the map view.
@@ -76,22 +74,12 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
             
             // Finally we place the annotation in an array of annotations.
             annotations.append(annotation)
-            
-            /*
-            print("            ")
-            print("--Dictionary Values--")
-            print("Latitude: \(lat)")
-            print("Longitude: \(long)")
-            print("Firstname: \(first)")
-            print("Lastname: \(last)")
-            print("MediaURL: \(mediaURL)")
-            */
+
         }
         
         self.mapView.delegate = self
         // When the array is complete, we add the annotations to the map.
         self.mapView.addAnnotations(annotations)
-        print("Ending Annotation Count: \(self.mapView.annotations.count)")
     }
     
     // MKMapViewDelegate
