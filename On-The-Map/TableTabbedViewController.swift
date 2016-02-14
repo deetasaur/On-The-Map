@@ -19,6 +19,18 @@ class TableTabbedViewController: UIViewController {
         getTableLocations()
     }
     
+    @IBAction func refresh() {
+        getTableLocations()
+    }
+    
+    @IBAction func logout(sender: AnyObject) {
+    }
+    
+    @IBAction func infoPosting(sender: AnyObject) {
+        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("InfoPostingViewController") 
+        self.presentViewController(controller, animated: true, completion: nil)
+    }
+    
     func getTableLocations() {
         OTMClient.sharedInstance().getStudentLocations() { (results, errorString) in
             if(results != nil) {

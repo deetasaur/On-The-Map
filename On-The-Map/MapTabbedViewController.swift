@@ -22,11 +22,19 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         getMapLocations()
     }
     
-    func refresh() {
+    @IBAction func refresh() {
         for annotation : MKAnnotation in mapView.annotations {
             mapView.removeAnnotation(annotation)
         }
         getMapLocations()
+    }
+    
+    @IBAction func logout(sender: AnyObject) {
+    }
+    
+    @IBAction func infoPosting(sender: AnyObject) {
+        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("InfoPostingViewController")
+        self.presentViewController(controller, animated: true, completion: nil)
     }
     
     func getMapLocations() {
