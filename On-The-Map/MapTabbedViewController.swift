@@ -30,6 +30,7 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
     }
     
     @IBAction func logout(sender: AnyObject) {
+        
     }
     
     @IBAction func infoPosting(sender: AnyObject) {

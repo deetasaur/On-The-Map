@@ -19,7 +19,7 @@ struct OTMStudentLocation {
     var uniqueKey: String? = nil
     var updatedAt: String? = nil
     
-    static let sharedInstance = OTMStudentLocation()
+    static var sharedInstance = OTMStudentLocation()
     var studentLocationList = [OTMStudentLocation]()
     
     init() {

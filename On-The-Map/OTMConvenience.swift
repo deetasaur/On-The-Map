@@ -46,6 +46,8 @@ extension OTMClient {
                 completionHandler(success: false, errorString: "Login Failed (Session ID).")
             } else {
                 print("Found \(OTMClient.JSONResponseKeys.SessionID) in \(JSONResult)")
+                let accountValues = JSONResult["account"] as? [String: AnyObject]
+                OTMStudentLocation.sharedInstance.uniqueKey = accountValues!["key"] as? String
                 completionHandler(success: true, errorString: nil)
             }
         }
@@ -77,5 +79,9 @@ extension OTMClient {
             }
         }
 
+    }
+    
+    func queryStudentLocation(completionHandler: (success: Bool, errorString: String?) -> Void) {
+        
     }
 }
