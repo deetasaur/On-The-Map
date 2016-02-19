@@ -26,9 +26,7 @@ class InfoPostingViewController: UIViewController {
     }
     
     @IBAction func findLocation(sender: AnyObject) {
-        print("calling function")
         validateLocation() { (success, errorString) in
-            print("Success Value: \(success)")
             if(success == true) {
                 self.performSegueWithIdentifier("infoPostingSegue", sender: self)
             }
@@ -53,12 +51,12 @@ class InfoPostingViewController: UIViewController {
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(studentLoc.text!, completionHandler: {(placemarks: [CLPlacemark]?, error: NSError?) -> Void in
             if let placemark = placemarks?[0] {
-                print("success: \(placemark.location?.coordinate.longitude) and \(placemark.location?.coordinate.latitude)")
+                print("Found location")
                 self.mapAnnotation = placemark
                 completionHandler(success: true, errorString: error?.description)
             }
             else {
-                print("failure")
+                print("Could not find location")
                 completionHandler(success: false, errorString: error?.description)
             }
         })

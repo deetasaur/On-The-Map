@@ -32,8 +32,13 @@ class OTMClient : NSObject {
         let urlString = urlString + OTMClient.escapedParameters(parameters)
         let url = NSURL(string: urlString)!
         let request = NSMutableURLRequest(URL: url)
-        request.addValue(OTMClient.Constants.parseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
-        request.addValue(OTMClient.Constants.restApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        if(parseType == "udacity") {
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        } else {
+            request.addValue(OTMClient.Constants.parseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
+            request.addValue(OTMClient.Constants.restApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        }
         
         /* 4. Make the request */
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
@@ -85,15 +90,21 @@ class OTMClient : NSObject {
         let url = NSURL(string: urlString)!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"
+        
         if(parseType == "udacity") {
             request.addValue("application/json", forHTTPHeaderField: "Accept")
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         } else {
-            
+            request.addValue(OTMClient.Constants.parseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
+            request.addValue(OTMClient.Constants.restApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         }
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
         do {
             request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(jsonBody, options: .PrettyPrinted)
         }
+        
+        //print(request.allHTTPHeaderFields)
+        //print(NSString(data: request.HTTPBody!, encoding:NSUTF8StringEncoding)!)
         
         /* 4. Make the request */
         let task = session.dataTaskWithRequest(request) { (data, response, error) in

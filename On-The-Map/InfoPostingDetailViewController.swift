@@ -57,6 +57,10 @@ class InfoPostingDetailViewController: UIViewController {
         OTMClient.sharedInstance().postStudentLocation() { (success, errorString) in
             if(success) {
                 print("Successfully submitted location")
+                dispatch_async(dispatch_get_main_queue()) {
+                    let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabbedController") as! UITabBarController
+                    self.presentViewController(controller, animated: true, completion: nil)
+                }
             } else {
                 print("Location submission errored out")
             }

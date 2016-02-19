@@ -61,7 +61,7 @@ extension OTMClient {
         let parameters: [String: AnyObject] = [
             OTMClient.ParameterKeys.limit: 100,
             OTMClient.ParameterKeys.skip: 400,
-            OTMClient.ParameterKeys.order: "updatedAt"
+            OTMClient.ParameterKeys.order: "-updatedAt"
         ]
         
         let url = OTMClient.Constants.baseParseSecureURL + OTMClient.Methods.parseStudentLocation
@@ -71,7 +71,6 @@ extension OTMClient {
                 print(error)
                 completionHandler(results: nil, errorString: "Getting all student locations failed")
             } else {
-                print("Found all student locations")
                 if let locations = JSONResult[OTMClient.JSONResponseKeys.locationResults] as? [[String: AnyObject]] {
                     var studentLocations = OTMStudentLocation.sharedInstance
                     studentLocations.studentLocationList = OTMStudentLocation.locationsFromResults(locations)
@@ -87,13 +86,13 @@ extension OTMClient {
     func postStudentLocation(completionHandler: (success:Bool, errorString: String?) -> Void) {
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
         let jsonBody : [String:AnyObject] = [
-            OTMClient.JSONResponseKeys.uniqueKey: "\(OTMStudentLocation.sharedInstance.uniqueKey)",
-            OTMClient.JSONResponseKeys.firstName: "\(OTMStudentLocation.sharedInstance.firstName)",
-            OTMClient.JSONResponseKeys.lastName: "\(OTMStudentLocation.sharedInstance.lastName)",
-            OTMClient.JSONResponseKeys.mapString: "\(OTMStudentLocation.sharedInstance.mapString)",
-            OTMClient.JSONResponseKeys.mediaURL: "\(OTMStudentLocation.sharedInstance.mediaURL)",
-            OTMClient.JSONResponseKeys.latitude: "\(OTMStudentLocation.sharedInstance.latitude)",
-            OTMClient.JSONResponseKeys.longitude: "\(OTMStudentLocation.sharedInstance.longitude)"
+            OTMClient.JSONResponseKeys.uniqueKey: "\(OTMStudentLocation.sharedInstance.uniqueKey!)",
+            OTMClient.JSONResponseKeys.firstName: "\(OTMStudentLocation.sharedInstance.firstName!)",
+            OTMClient.JSONResponseKeys.lastName: "\(OTMStudentLocation.sharedInstance.lastName!)",
+            OTMClient.JSONResponseKeys.mapString: "\(OTMStudentLocation.sharedInstance.mapString!)",
+            OTMClient.JSONResponseKeys.mediaURL: "\(OTMStudentLocation.sharedInstance.mediaURL!)",
+            OTMClient.JSONResponseKeys.latitude: OTMStudentLocation.sharedInstance.latitude!,
+            OTMClient.JSONResponseKeys.longitude: OTMStudentLocation.sharedInstance.longitude!
         ]
         
         let url = OTMClient.Constants.baseParseSecureURL + OTMClient.Methods.updateStudentLocation
@@ -119,7 +118,6 @@ extension OTMClient {
                 print(error)
                 completionHandler(success: false, errorString: "Getting student data failed")
             } else {
-                //print("Found student data")
                 if let student = JSONResult["user"] as? [String: AnyObject] {
                     OTMStudentLocation.sharedInstance.firstName = student["first_name"] as? String
                     OTMStudentLocation.sharedInstance.lastName = student["last_name"] as? String
