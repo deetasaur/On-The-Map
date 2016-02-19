@@ -16,7 +16,7 @@ extension OTMClient {
     
     // Authentication (GET) Methods
     func authenticateWithViewController(username: String?, password: String?, hostViewController: UIViewController, completionHandler: (success: Bool, errorString: String?) -> Void) {
-        self.getSessionID(username, password: password) { (success, errorString) in
+        self.postSessionID(username, password: password) { (success, errorString) in
             if success {
                 completionHandler(success: success, errorString: errorString)
             } else {
@@ -25,7 +25,7 @@ extension OTMClient {
         }
     }
     
-    func getSessionID(username: String?, password: String?, completionHandler: (success: Bool, errorString: String?) -> Void) {
+    func postSessionID(username: String?, password: String?, completionHandler: (success: Bool, errorString: String?) -> Void) {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
         let jsonBody : [String:AnyObject] = [
@@ -45,9 +45,12 @@ extension OTMClient {
                 print(error)
                 completionHandler(success: false, errorString: "Login Failed (Session ID).")
             } else {
-                print("Found \(OTMClient.JSONResponseKeys.SessionID) in \(JSONResult)")
-                let accountValues = JSONResult["account"] as? [String: AnyObject]
-                OTMStudentLocation.sharedInstance.uniqueKey = accountValues!["key"] as? String
+                print("Got session")
+                guard let accountValues = JSONResult[OTMClient.JSONResponseKeys.account] as? [String: AnyObject] else {
+                    print("Problem with \(OTMClient.JSONResponseKeys.SessionID) in \(JSONResult)")
+                    return
+                }
+                OTMStudentLocation.sharedInstance.uniqueKey = accountValues["key"] as? String
                 completionHandler(success: true, errorString: nil)
             }
         }
@@ -66,9 +69,9 @@ extension OTMClient {
         taskForGETMethod("parse", urlString: url, parameters: parameters) { JSONResult, error in
             if let error = error {
                 print(error)
-                completionHandler(results: nil, errorString: "Getting student locations failed")
+                completionHandler(results: nil, errorString: "Getting all student locations failed")
             } else {
-                print("Found student locations")
+                print("Found all student locations")
                 if let locations = JSONResult[OTMClient.JSONResponseKeys.locationResults] as? [[String: AnyObject]] {
                     var studentLocations = OTMStudentLocation.sharedInstance
                     studentLocations.studentLocationList = OTMStudentLocation.locationsFromResults(locations)
@@ -81,7 +84,50 @@ extension OTMClient {
 
     }
     
-    func queryStudentLocation(completionHandler: (success: Bool, errorString: String?) -> Void) {
+    func postStudentLocation(completionHandler: (success:Bool, errorString: String?) -> Void) {
+        /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
+        let jsonBody : [String:AnyObject] = [
+            OTMClient.JSONResponseKeys.uniqueKey: "\(OTMStudentLocation.sharedInstance.uniqueKey)",
+            OTMClient.JSONResponseKeys.firstName: "\(OTMStudentLocation.sharedInstance.firstName)",
+            OTMClient.JSONResponseKeys.lastName: "\(OTMStudentLocation.sharedInstance.lastName)",
+            OTMClient.JSONResponseKeys.mapString: "\(OTMStudentLocation.sharedInstance.mapString)",
+            OTMClient.JSONResponseKeys.mediaURL: "\(OTMStudentLocation.sharedInstance.mediaURL)",
+            OTMClient.JSONResponseKeys.latitude: "\(OTMStudentLocation.sharedInstance.latitude)",
+            OTMClient.JSONResponseKeys.longitude: "\(OTMStudentLocation.sharedInstance.longitude)"
+        ]
         
+        let url = OTMClient.Constants.baseParseSecureURL + OTMClient.Methods.updateStudentLocation
+        
+        taskForPOSTMethod("parse", urlString: url, jsonBody: jsonBody) { JSONResult, error in
+            if let error = error {
+                print(error)
+                completionHandler(success: false, errorString: "Posting Student Location failed")
+            } else {
+                completionHandler(success: true, errorString: nil)
+            }
+        }
+    }
+    
+    func getUserData(completionHandler: (success: Bool, errorString: String?) -> Void) {
+        let url = OTMClient.Constants.baseURLSecureString + OTMClient.Methods.udacityUserData
+        let value = OTMStudentLocation.sharedInstance.uniqueKey!
+        
+        let newURL = OTMClient.subtituteKeyInMethod(url, key: OTMClient.ParameterKeys.id, value: value)
+        
+        taskForGETMethod("udacity", urlString: newURL!, parameters: [String:AnyObject]()) { JSONResult, error in
+            if let error = error {
+                print(error)
+                completionHandler(success: false, errorString: "Getting student data failed")
+            } else {
+                //print("Found student data")
+                if let student = JSONResult["user"] as? [String: AnyObject] {
+                    OTMStudentLocation.sharedInstance.firstName = student["first_name"] as? String
+                    OTMStudentLocation.sharedInstance.lastName = student["last_name"] as? String
+                    completionHandler(success: true, errorString: nil)
+                } else {
+                    completionHandler(success: false, errorString: "JSONResult was empty")
+                }
+            }
+        }
     }
 }

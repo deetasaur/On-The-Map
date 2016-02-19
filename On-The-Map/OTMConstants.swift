@@ -28,7 +28,7 @@ extension OTMClient {
         static let udacityDeleteSession = "session"
         
         static let parseStudentLocation = "StudentLocation"
-        static let updateStudentLocation = "StudentLocation/{objectId}"
+        static let updateStudentLocation = "StudentLocation"
     }
     
     // Parameter Keys
@@ -36,6 +36,8 @@ extension OTMClient {
         static let limit = "limit"
         static let skip = "skip"
         static let order = "order"
+        
+        static let id = "id"
     }
     
     // JSON Body Keys
@@ -48,6 +50,7 @@ extension OTMClient {
     // JSON Response Keys
     struct JSONResponseKeys {
         static let SessionID = "session"
+        static let account = "account"
         static let locationResults = "results"
         
         static let createdAt = "createdAt"

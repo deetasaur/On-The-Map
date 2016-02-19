@@ -15,16 +15,15 @@ class InfoPostingDetailViewController: UIViewController {
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var mediaURL: UITextView!
     
-    var studentLocation = OTMStudentLocation.sharedInstance
     var textLocation: String!
     var mapAnnotation: CLPlacemark!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        studentLocation.latitude = Double(mapAnnotation.location!.coordinate.latitude)
-        studentLocation.longitude = Double(mapAnnotation.location!.coordinate.longitude)
-        studentLocation.mapString = textLocation
+        OTMStudentLocation.sharedInstance.latitude = Double(mapAnnotation.location!.coordinate.latitude)
+        OTMStudentLocation.sharedInstance.longitude = Double(mapAnnotation.location!.coordinate.longitude)
+        OTMStudentLocation.sharedInstance.mapString = textLocation
         
         mapLocation.addAnnotation(MKPlacemark(placemark: mapAnnotation))
         //mapLocation.camera.altitude = 100000.0
@@ -42,8 +41,24 @@ class InfoPostingDetailViewController: UIViewController {
             alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alertController, animated: true, completion: nil)
         } else {
-            OTMClient.sharedInstance().queryStudentLocation() { (success, errorString) in
-                self.studentLocation.mediaURL = self.mediaURL.text
+            OTMClient.sharedInstance().getUserData() { (success, errorString) in
+                if(success) {
+                    print("Found all student values for \(OTMStudentLocation.sharedInstance.firstName!) \(OTMStudentLocation.sharedInstance.lastName!)")
+                    OTMStudentLocation.sharedInstance.mediaURL = self.mediaURL.text
+                    self.submitLocation()
+                } else {
+                    print("Could not find all student values")
+                }
+            }
+        }
+    }
+    
+    func submitLocation() {
+        OTMClient.sharedInstance().postStudentLocation() { (success, errorString) in
+            if(success) {
+                print("Successfully submitted location")
+            } else {
+                print("Location submission errored out")
             }
         }
     }

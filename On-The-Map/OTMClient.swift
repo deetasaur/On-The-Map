@@ -64,7 +64,8 @@ class OTMClient : NSObject {
             
             /* 5/6. Parse the data and use the data (happens in completion handler) */
             if(parseType == "udacity") {
-                OTMClient.parseJSONWithUdacityCompletionHandler(data, completionHandler: completionHandler)
+                let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+                OTMClient.parseJSONWithCompletionHandler(newData, completionHandler: completionHandler)
             } else {
                 OTMClient.parseJSONWithCompletionHandler(data, completionHandler: completionHandler)
             }
@@ -84,8 +85,12 @@ class OTMClient : NSObject {
         let url = NSURL(string: urlString)!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        if(parseType == "udacity") {
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        } else {
+            
+        }
         do {
             request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(jsonBody, options: .PrettyPrinted)
         }
@@ -119,7 +124,8 @@ class OTMClient : NSObject {
             
             /* 5/6. Parse the data and use the data (happens in completion handler) */
             if(parseType == "udacity") {
-                OTMClient.parseJSONWithUdacityCompletionHandler(data, completionHandler: completionHandler)
+                let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+                OTMClient.parseJSONWithCompletionHandler(newData, completionHandler: completionHandler)
             } else {
                 OTMClient.parseJSONWithCompletionHandler(data, completionHandler: completionHandler)
             }
@@ -152,6 +158,15 @@ class OTMClient : NSObject {
         }
         
         completionHandler(result: parsedResult, error: nil)
+    }
+    
+    /* Helper: Substitute the key for the value that is contained within the method name */
+    class func subtituteKeyInMethod(method: String, key: String, value: String) -> String? {
+        if method.rangeOfString("{\(key)}") != nil {
+            return method.stringByReplacingOccurrencesOfString("{\(key)}", withString: value)
+        } else {
+            return nil
+        }
     }
     
     /* Helper function: Given a dictionary of parameters, convert to a string for a url */
