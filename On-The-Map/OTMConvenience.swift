@@ -42,8 +42,8 @@ extension OTMClient {
             
             /* 3. Send the desired value(s) to completion handler */
             if let error = error {
-                print(error)
-                completionHandler(success: false, errorString: "Login Failed (Session ID).")
+                print("Error: \(error)")
+                completionHandler(success: false, errorString: "Invalid email or password")
             } else {
                 print("Got session")
                 guard let accountValues = JSONResult[OTMClient.JSONResponseKeys.account] as? [String: AnyObject] else {

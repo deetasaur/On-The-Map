@@ -112,6 +112,7 @@ class OTMClient : NSObject {
             /* GUARD: Was there an error? */
             guard (error == nil) else {
                 print("There was an error with your request: \(error)")
+                completionHandler(result: nil, error: NSError(domain: "error", code: 1, userInfo: ["error":"error"]))
                 return
             }
             
@@ -124,12 +125,14 @@ class OTMClient : NSObject {
                 } else {
                     print("Your request returned an invalid response!")
                 }
+                completionHandler(result: nil, error: NSError(domain: "error", code: 1, userInfo: ["error":"error"]))
                 return
             }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
                 print("No data was returned by the request!")
+                completionHandler(result: nil, error: NSError(domain: "error", code: 1, userInfo: ["error":"error"]))
                 return
             }
             

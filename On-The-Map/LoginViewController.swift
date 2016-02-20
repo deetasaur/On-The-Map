@@ -56,7 +56,9 @@ class LoginViewController: UIViewController {
                     print("Success Authentication")
                     self.completeLogin()
                 } else {
-                    self.debugText.text = "Failed Authentication"
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.debugText.text = errorString
+                    }
                 }
             }
         }
@@ -76,11 +78,11 @@ class LoginViewController: UIViewController {
     }
     
     func displayError(errorString: String?) {
-        dispatch_async(dispatch_get_main_queue(), {
+        dispatch_async(dispatch_get_main_queue()) {
             if let errorString = errorString {
                 self.debugText.text = errorString
             }
-        })
+        }
     }
     
     func configureUI() {
