@@ -24,6 +24,14 @@ class TableTabbedViewController: UIViewController {
     }
     
     @IBAction func logout(sender: AnyObject) {
+        OTMClient.sharedInstance().logoutSession() { (success, errorString) in
+            if(success) {
+                let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LoginViewController")
+                self.presentViewController(controller, animated: true, completion: nil)
+            } else {
+                print("Failed to log out")
+            }
+        }
     }
     
     @IBAction func infoPosting(sender: AnyObject) {

@@ -56,6 +56,19 @@ extension OTMClient {
         }
     }
     
+    func logoutSession(completionHandler: (success: Bool, errorString: String?) -> Void) {
+        let url = OTMClient.Constants.baseURLSecureString + OTMClient.Methods.udacityDeleteSession
+        taskForDeleteMethod(url) { JSONResult, error in
+            if let error = error {
+                print(error)
+                completionHandler(success: false, errorString: "Logout Failed")
+            } else {
+                print("Sucessfully Logged Out")
+                completionHandler(success: true, errorString: nil)
+            }
+        }
+    }
+    
     func getStudentLocations(completionHandler: (results: [OTMStudentLocation]?, errorString: String?) -> Void) {
         
         let parameters: [String: AnyObject] = [

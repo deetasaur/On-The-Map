@@ -30,7 +30,12 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
     }
     
     @IBAction func logout(sender: AnyObject) {
-        
+        OTMClient.sharedInstance().logoutSession() { (success, errorString) in
+            if(success) {
+                let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LoginViewController")
+                self.presentViewController(controller, animated: true, completion: nil)
+            }
+        }
     }
     
     @IBAction func infoPosting(sender: AnyObject) {
