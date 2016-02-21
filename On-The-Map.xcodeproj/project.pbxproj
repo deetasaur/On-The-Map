@@ -16,7 +16,6 @@
 		B360169F1C60DA7E00848B43 /* OTMConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B360169E1C60DA7E00848B43 /* OTMConstants.swift */; };
 		B36016A11C60DA8B00848B43 /* OTMConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36016A01C60DA8B00848B43 /* OTMConvenience.swift */; };
 		B36016A31C60DA9200848B43 /* OTMClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36016A21C60DA9200848B43 /* OTMClient.swift */; };
-		B36016A71C60DAA800848B43 /* OTMConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36016A61C60DAA800848B43 /* OTMConfig.swift */; };
 		B36016A91C60DABF00848B43 /* OTMStudentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36016A81C60DABF00848B43 /* OTMStudentLocation.swift */; };
 		B363EC2B1C7105EC000C2B4E /* InfoPostingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B363EC2A1C7105EC000C2B4E /* InfoPostingDetailViewController.swift */; };
 		B380E60C1C59675B00C287E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B380E60B1C59675B00C287E2 /* AppDelegate.swift */; };
@@ -55,7 +54,6 @@
 		B360169E1C60DA7E00848B43 /* OTMConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMConstants.swift; sourceTree = "<group>"; };
 		B36016A01C60DA8B00848B43 /* OTMConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMConvenience.swift; sourceTree = "<group>"; };
 		B36016A21C60DA9200848B43 /* OTMClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMClient.swift; sourceTree = "<group>"; };
-		B36016A61C60DAA800848B43 /* OTMConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMConfig.swift; sourceTree = "<group>"; };
 		B36016A81C60DABF00848B43 /* OTMStudentLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMStudentLocation.swift; sourceTree = "<group>"; };
 		B363EC2A1C7105EC000C2B4E /* InfoPostingDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoPostingDetailViewController.swift; sourceTree = "<group>"; };
 		B380E6081C59675B00C287E2 /* On-The-Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On-The-Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,7 +131,6 @@
 				B360169E1C60DA7E00848B43 /* OTMConstants.swift */,
 				B36016A01C60DA8B00848B43 /* OTMConvenience.swift */,
 				B36016A21C60DA9200848B43 /* OTMClient.swift */,
-				B36016A61C60DAA800848B43 /* OTMConfig.swift */,
 				B36016A81C60DABF00848B43 /* OTMStudentLocation.swift */,
 			);
 			name = OTM;
@@ -327,7 +324,6 @@
 				B36016A11C60DA8B00848B43 /* OTMConvenience.swift in Sources */,
 				B36016991C5FDA8600848B43 /* StudentLocation.swift in Sources */,
 				B35F34401C5D1AB800B50885 /* TableTabbedViewController.swift in Sources */,
-				B36016A71C60DAA800848B43 /* OTMConfig.swift in Sources */,
 				B363EC2B1C7105EC000C2B4E /* InfoPostingDetailViewController.swift in Sources */,
 				B31A53421C5D0EC200F16565 /* LoginViewController.swift in Sources */,
 				B380E60E1C59675B00C287E2 /* ViewController.swift in Sources */,
