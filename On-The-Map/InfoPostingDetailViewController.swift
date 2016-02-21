@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class InfoPostingDetailViewController: UIViewController {
+class InfoPostingDetailViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var mapLocation: MKMapView!
     @IBOutlet weak var submitButton: UIButton!
@@ -21,6 +21,7 @@ class InfoPostingDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        mediaURL.delegate = self
         configureUI()
         
         OTMStudentLocation.sharedInstance.latitude = Double(mapAnnotation.location!.coordinate.latitude)
@@ -28,7 +29,7 @@ class InfoPostingDetailViewController: UIViewController {
         OTMStudentLocation.sharedInstance.mapString = textLocation
         
         mapLocation.addAnnotation(MKPlacemark(placemark: mapAnnotation))
-        //mapLocation.camera.altitude = 100000.0
+        mapLocation.camera.altitude = 1000.0
         mapLocation.setCenterCoordinate(mapAnnotation.location!.coordinate, animated: true)
     }
     
@@ -77,5 +78,23 @@ class InfoPostingDetailViewController: UIViewController {
     func configureUI() {
         mediaURL.textContainerInset = UIEdgeInsetsMake(60, 12, 10, 12)
         mediaURL.autocapitalizationType = UITextAutocapitalizationType.None
+        mediaURL.text = "Enter a URL here..."
+        mediaURL.textColor = UIColor.lightGrayColor()
+    }
+    
+    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+        if textView.textColor == UIColor.lightGrayColor() {
+            textView.text = ""
+            textView.textColor = UIColor.whiteColor()
+        }
+        return true
+    }
+    
+    func textViewShouldEndEditing(textView: UITextView) -> Bool {
+        if textView.text.isEmpty {
+            textView.text = "Enter a URL here..."
+            textView.textColor = UIColor.lightGrayColor()
+        }
+        return true
     }
 }

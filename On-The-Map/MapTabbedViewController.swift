@@ -53,6 +53,7 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
                 }
             } else {
                 print("Didn't get student locations")
+                self.errorAlert("Could not download student locations")
             }
         }
     }
@@ -130,5 +131,11 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
                 app.openURL(NSURL(string: toOpen)!)
             }
         }
+    }
+    
+    func errorAlert(errorString: String) {
+        let alertController = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
  }

@@ -48,6 +48,7 @@ class TableTabbedViewController: UIViewController {
                 }
             } else {
                 print("Didn't get student locations")
+                self.errorAlert("Could not download student locations")
             }
         }
     }
@@ -81,6 +82,12 @@ extension TableTabbedViewController: UITableViewDelegate, UITableViewDataSource 
         let location = locations[indexPath.row]
         let mediaURL = location.mediaURL
         app.openURL(NSURL(string: mediaURL!)!)
+    }
+    
+    func errorAlert(errorString: String) {
+        let alertController = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 }
 

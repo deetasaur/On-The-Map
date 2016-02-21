@@ -10,7 +10,7 @@
 import UIKit
 import MapKit
 
-class InfoPostingViewController: UIViewController {
+class InfoPostingViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var studentLoc: UITextView!
     
@@ -18,6 +18,7 @@ class InfoPostingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        studentLoc.delegate = self
         configureUI()
     }
     
@@ -69,5 +70,23 @@ class InfoPostingViewController: UIViewController {
     
     func configureUI() {
         studentLoc.textContainerInset = UIEdgeInsetsMake(40, 12, 40, 12)
+        studentLoc.text = "Enter a location here..."
+        studentLoc.textColor = UIColor.lightGrayColor()
+    }
+    
+    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+        if textView.textColor == UIColor.lightGrayColor() {
+            textView.text = ""
+            textView.textColor = UIColor.whiteColor()
+        }
+        return true
+    }
+    
+    func textViewShouldEndEditing(textView: UITextView) -> Bool {
+        if textView.text.isEmpty {
+            textView.text = "Enter a location here..."
+            textView.textColor = UIColor.lightGrayColor()
+        }
+        return true
     }
 }
