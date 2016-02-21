@@ -67,7 +67,7 @@ class LoginViewController: UIViewController {
     
     @IBAction func signUp(sender: AnyObject) {
         let app = UIApplication.sharedApplication()
-        app.openURL(NSURL(fileURLWithPath: "https://www.udacity.com/account/auth#!/signin"))
+        app.openURL(NSURL(string: "https://www.udacity.com/account/auth#!/signin")!)
     }
     
     func completeLogin() {
@@ -97,6 +97,7 @@ class LoginViewController: UIViewController {
         textField.leftView = paddingView
         textField.leftViewMode = UITextFieldViewMode.Always
         textField.autocapitalizationType = UITextAutocapitalizationType.None
+        textField.autocorrectionType = UITextAutocorrectionType.No
     }
     
     func dismissKeyboard() {

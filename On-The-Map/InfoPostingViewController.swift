@@ -18,6 +18,7 @@ class InfoPostingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureUI()
     }
     
     @IBAction func cancel(sender: AnyObject) {
@@ -32,9 +33,7 @@ class InfoPostingViewController: UIViewController {
             }
             else {
                 print("Invalid Location")
-                let alertController = UIAlertController(title: "Error", message: "Not a valid location", preferredStyle: UIAlertControllerStyle.Alert)
-                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
-                self.presentViewController(alertController, animated: true, completion: nil)
+                self.errorAlert("Not a valid location")
             }
         }
     }
@@ -60,5 +59,15 @@ class InfoPostingViewController: UIViewController {
                 completionHandler(success: false, errorString: error?.description)
             }
         })
+    }
+    
+    func errorAlert(errorString: String) {
+        let alertController = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func configureUI() {
+        studentLoc.textContainerInset = UIEdgeInsetsMake(40, 12, 40, 12)
     }
 }

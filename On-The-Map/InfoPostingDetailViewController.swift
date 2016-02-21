@@ -21,6 +21,8 @@ class InfoPostingDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureUI()
+        
         OTMStudentLocation.sharedInstance.latitude = Double(mapAnnotation.location!.coordinate.latitude)
         OTMStudentLocation.sharedInstance.longitude = Double(mapAnnotation.location!.coordinate.longitude)
         OTMStudentLocation.sharedInstance.mapString = textLocation
@@ -37,9 +39,7 @@ class InfoPostingDetailViewController: UIViewController {
     
     @IBAction func submit(sender: AnyObject) {
         if(mediaURL.text.isEmpty) {
-            let alertController = UIAlertController(title: "Error", message: "Please enter a URL", preferredStyle: UIAlertControllerStyle.Alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.errorAlert("Please enter a valid URL")
         } else {
             OTMClient.sharedInstance().getUserData() { (success, errorString) in
                 if(success) {
@@ -63,7 +63,19 @@ class InfoPostingDetailViewController: UIViewController {
                 }
             } else {
                 print("Location submission errored out")
+                self.errorAlert("Unable to submit. Please try again.")
             }
         }
+    }
+    
+    func errorAlert(errorString: String) {
+        let alertController = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func configureUI() {
+        mediaURL.textContainerInset = UIEdgeInsetsMake(60, 12, 10, 12)
+        mediaURL.autocapitalizationType = UITextAutocapitalizationType.None
     }
 }
