@@ -42,8 +42,7 @@ extension OTMClient {
             
             /* 3. Send the desired value(s) to completion handler */
             if let error = error {
-                print("Error: \(error)")
-                completionHandler(success: false, errorString: "Invalid email or password")
+                completionHandler(success: false, errorString: error.domain)
             } else {
                 print("Got session")
                 guard let accountValues = JSONResult[OTMClient.JSONResponseKeys.account] as? [String: AnyObject] else {
@@ -85,9 +84,8 @@ extension OTMClient {
                 completionHandler(results: nil, errorString: "Getting all student locations failed")
             } else {
                 if let locations = JSONResult[OTMClient.JSONResponseKeys.locationResults] as? [[String: AnyObject]] {
-                    var studentLocations = OTMStudentLocation.sharedInstance
-                    studentLocations.studentLocationList = OTMStudentLocation.locationsFromResults(locations)
-                    completionHandler(results: studentLocations.studentLocationList, errorString: nil)
+                    OTMStudentLocation.sharedInstance.studentLocationList = OTMStudentLocation.locationsFromResults(locations)
+                    completionHandler(results: OTMStudentLocation.sharedInstance.studentLocationList, errorString: nil)
                 } else {
                     completionHandler(results: nil, errorString: "JSONResult was empty")
                 }

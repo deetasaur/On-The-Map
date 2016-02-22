@@ -34,8 +34,7 @@ class InfoPostingDetailViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func cancel(sender: AnyObject) {
-        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabbedController") as! UITabBarController
-        self.presentViewController(controller, animated: true, completion: nil)
+        self.dismissViewControllerAnimated(false, completion: nil)
     }
     
     @IBAction func submit(sender: AnyObject) {

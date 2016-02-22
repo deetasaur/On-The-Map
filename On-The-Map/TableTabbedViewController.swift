@@ -10,8 +10,6 @@ import UIKit
 
 class TableTabbedViewController: UIViewController {
     
-    var locations : [OTMStudentLocation] = []
-    
     @IBOutlet weak var studentLocTable: UITableView!
     
     override func viewDidLoad() {
@@ -43,7 +41,6 @@ class TableTabbedViewController: UIViewController {
         OTMClient.sharedInstance().getStudentLocations() { (results, errorString) in
             if(results != nil) {
                 dispatch_async(dispatch_get_main_queue()) {
-                    self.locations = results!
                     self.studentLocTable.reloadData()
                 }
             } else {
@@ -61,7 +58,7 @@ extension TableTabbedViewController: UITableViewDelegate, UITableViewDataSource 
         
         /* Get cell type */
         let cellReuseIdentifier = "StudentTableViewCell"
-        let location = locations[indexPath.row]
+        let location = OTMStudentLocation.sharedInstance.studentLocationList [indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier(cellReuseIdentifier) as UITableViewCell!
         
         
@@ -74,12 +71,12 @@ extension TableTabbedViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return locations.count
+        return OTMStudentLocation.sharedInstance.studentLocationList .count
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let app = UIApplication.sharedApplication()
-        let location = locations[indexPath.row]
+        let location = OTMStudentLocation.sharedInstance.studentLocationList [indexPath.row]
         let mediaURL = location.mediaURL
         app.openURL(NSURL(string: mediaURL!)!)
     }

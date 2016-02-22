@@ -12,7 +12,6 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var pwdTextFIeld: UITextField!
-    @IBOutlet weak var debugText: UILabel!
     @IBOutlet weak var udacityIcon: UIImageView!
     
     var appDelegate: AppDelegate!
@@ -45,10 +44,10 @@ class LoginViewController: UIViewController {
     
     @IBAction func loginButtonTouch(sender: UIButton) {
         if emailTextField.text!.isEmpty {
-            self.debugText.text = "Email can't be empty"
+            errorAlert("Email can't be empty")
             return
         } else if pwdTextFIeld.text!.isEmpty {
-            self.debugText.text = "Password can't be empty"
+            errorAlert("Password can't be empty")
             return
         } else {
             OTMClient.sharedInstance().authenticateWithViewController(emailTextField.text!, password: pwdTextFIeld.text!, hostViewController: self) { (success, errorString) in
@@ -57,7 +56,7 @@ class LoginViewController: UIViewController {
                     self.completeLogin()
                 } else {
                     dispatch_async(dispatch_get_main_queue()) {
-                        self.debugText.text = errorString
+                        self.errorAlert(errorString!)
                     }
                 }
             }
@@ -77,16 +76,13 @@ class LoginViewController: UIViewController {
         })
     }
     
-    func displayError(errorString: String?) {
-        dispatch_async(dispatch_get_main_queue()) {
-            if let errorString = errorString {
-                self.debugText.text = errorString
-            }
-        }
+    func errorAlert(errorString: String) {
+        let alertController = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     func configureUI() {
-        debugText.text = ""
         udacityIcon.hidden = false
         padTextField(self.emailTextField)
         padTextField(self.pwdTextFIeld)

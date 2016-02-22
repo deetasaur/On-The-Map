@@ -15,8 +15,6 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
     // is set up as the map view's delegate.
     @IBOutlet weak var mapView: MKMapView!
     
-    var locations : [OTMStudentLocation] = []
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         getMapLocations()
@@ -48,7 +46,6 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         OTMClient.sharedInstance().getStudentLocations() { (results, errorString) in
             if(results != nil) {
                 dispatch_async(dispatch_get_main_queue()) {
-                    self.locations = results!
                     self.setMapLocations()
                 }
             } else {
@@ -68,7 +65,7 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         // to create map annotations. This would be more stylish if the dictionaries were being
         // used to create custom structs. Perhaps StudentLocation structs.
         
-        for location in locations {
+        for location in OTMStudentLocation.sharedInstance.studentLocationList {
             // Notice that the float values are being used to create CLLocationDegree values.
             // This is a version of the Double type.
             let lat = CLLocationDegrees(location.latitude! as Double)

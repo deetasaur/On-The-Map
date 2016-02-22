@@ -13,6 +13,7 @@ import MapKit
 class InfoPostingViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var studentLoc: UITextView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var mapAnnotation: CLPlacemark!
     
@@ -23,11 +24,11 @@ class InfoPostingViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func cancel(sender: AnyObject) {
-        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabbedController") as! UITabBarController
-        self.presentViewController(controller, animated: true, completion: nil)
+        self.dismissViewControllerAnimated(false, completion: nil)
     }
     
     @IBAction func findLocation(sender: AnyObject) {
+        activityIndicator.hidden = false
         validateLocation() { (success, errorString) in
             if(success == true) {
                 self.performSegueWithIdentifier("infoPostingSegue", sender: self)
@@ -51,11 +52,13 @@ class InfoPostingViewController: UIViewController, UITextViewDelegate {
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(studentLoc.text!, completionHandler: {(placemarks: [CLPlacemark]?, error: NSError?) -> Void in
             if let placemark = placemarks?[0] {
+                self.activityIndicator.hidden = true
                 print("Found location")
                 self.mapAnnotation = placemark
                 completionHandler(success: true, errorString: error?.description)
             }
             else {
+                self.activityIndicator.hidden = true
                 print("Could not find location")
                 completionHandler(success: false, errorString: error?.description)
             }
@@ -72,6 +75,7 @@ class InfoPostingViewController: UIViewController, UITextViewDelegate {
         studentLoc.textContainerInset = UIEdgeInsetsMake(40, 12, 40, 12)
         studentLoc.text = "Enter a location here..."
         studentLoc.textColor = UIColor.lightGrayColor()
+        activityIndicator.hidden = true
     }
     
     func textViewShouldBeginEditing(textView: UITextView) -> Bool {

@@ -46,6 +46,7 @@ class OTMClient : NSObject {
             /* GUARD: Was there an error? */
             guard (error == nil) else {
                 print("There was an error with your request: \(error)")
+                completionHandler(result: nil, error: NSError(domain: "Network Error", code: 1, userInfo: ["error":"error"]))
                 return
             }
             
@@ -58,12 +59,14 @@ class OTMClient : NSObject {
                 } else {
                     print("Your request returned an invalid response!")
                 }
+                completionHandler(result: nil, error: NSError(domain: "Invalid credentials", code: 1, userInfo: ["error":"error"]))
                 return
             }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
                 print("No data was returned by the request!")
+                completionHandler(result: nil, error: NSError(domain: "No data error", code: 1, userInfo: ["error":"error"]))
                 return
             }
             
@@ -90,7 +93,6 @@ class OTMClient : NSObject {
         let url = NSURL(string: urlString)!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"
-        
         if(parseType == "udacity") {
             request.addValue("application/json", forHTTPHeaderField: "Accept")
         } else {
@@ -98,21 +100,18 @@ class OTMClient : NSObject {
             request.addValue(OTMClient.Constants.restApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
         do {
             request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(jsonBody, options: .PrettyPrinted)
         }
-        
         //print(request.allHTTPHeaderFields)
         //print(NSString(data: request.HTTPBody!, encoding:NSUTF8StringEncoding)!)
         
         /* 4. Make the request */
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
-            
             /* GUARD: Was there an error? */
             guard (error == nil) else {
                 print("There was an error with your request: \(error)")
-                completionHandler(result: nil, error: NSError(domain: "error", code: 1, userInfo: ["error":"error"]))
+                completionHandler(result: nil, error: NSError(domain: "Network Error", code: 1, userInfo: ["error":"error"]))
                 return
             }
             
@@ -125,14 +124,14 @@ class OTMClient : NSObject {
                 } else {
                     print("Your request returned an invalid response!")
                 }
-                completionHandler(result: nil, error: NSError(domain: "error", code: 1, userInfo: ["error":"error"]))
+                completionHandler(result: nil, error: NSError(domain: "Invalid credentials", code: 1, userInfo: ["error":"error"]))
                 return
             }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
                 print("No data was returned by the request!")
-                completionHandler(result: nil, error: NSError(domain: "error", code: 1, userInfo: ["error":"error"]))
+                completionHandler(result: nil, error: NSError(domain: "No data error", code: 1, userInfo: ["error":"error"]))
                 return
             }
             
@@ -171,6 +170,7 @@ class OTMClient : NSObject {
             
             guard (error == nil) else {
                 print("There was an error with your request: \(error)")
+                completionHandler(result: nil, error: NSError(domain: "Network Error", code: 1, userInfo: ["error":"error"]))
                 return
             }
             
@@ -182,11 +182,13 @@ class OTMClient : NSObject {
                 } else {
                     print("Your request returned an invalid response!")
                 }
+                completionHandler(result: nil, error: NSError(domain: "Invalid credentials", code: 1, userInfo: ["error":"error"]))
                 return
             }
             
             guard let data = data else {
                 print("No data was returned by the request!")
+                completionHandler(result: nil, error: NSError(domain: "No data error", code: 1, userInfo: ["error":"error"]))
                 return
             }
             
