@@ -21,6 +21,9 @@ class InfoPostingDetailViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        view.addGestureRecognizer(tap)
+        
         mediaURL.delegate = self
         configureUI()
         
@@ -93,6 +96,17 @@ class InfoPostingDetailViewController: UIViewController, UITextViewDelegate {
         if textView.text.isEmpty {
             textView.text = "Enter a URL here..."
             textView.textColor = UIColor.lightGrayColor()
+        }
+        return true
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            textView.resignFirstResponder()
         }
         return true
     }

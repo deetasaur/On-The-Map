@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var pwdTextFIeld: UITextField!
@@ -24,6 +24,8 @@ class LoginViewController: UIViewController {
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         view.addGestureRecognizer(tap)
+        self.emailTextField.delegate = self
+        self.pwdTextFIeld.delegate = self
         
         /* Get the app delegate */
         appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -32,7 +34,7 @@ class LoginViewController: UIViewController {
         session = NSURLSession.sharedSession()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         subscribeToKeyboardNotifications()
     }
@@ -100,6 +102,11 @@ class LoginViewController: UIViewController {
         view.endEditing(true)
     }
     
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+
     // Move the image screen up based on keyboard height
     func keyboardWillShow(notification: NSNotification) {
         if(udacityIcon.hidden == false) {

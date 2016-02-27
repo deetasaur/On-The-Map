@@ -20,7 +20,21 @@ class InfoPostingViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         studentLoc.delegate = self
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        view.addGestureRecognizer(tap)
+        
         configureUI()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        subscribeToKeyboardNotifications()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        unsubscribeFromKeyboardNotifications()
     }
     
     @IBAction func cancel(sender: AnyObject) {
@@ -28,6 +42,7 @@ class InfoPostingViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func findLocation(sender: AnyObject) {
+        activityIndicator.startAnimating()
         activityIndicator.hidden = false
         validateLocation() { (success, errorString) in
             if(success == true) {
@@ -52,12 +67,14 @@ class InfoPostingViewController: UIViewController, UITextViewDelegate {
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(studentLoc.text!, completionHandler: {(placemarks: [CLPlacemark]?, error: NSError?) -> Void in
             if let placemark = placemarks?[0] {
+                self.activityIndicator.stopAnimating()
                 self.activityIndicator.hidden = true
                 print("Found location")
                 self.mapAnnotation = placemark
                 completionHandler(success: true, errorString: error?.description)
             }
             else {
+                self.activityIndicator.stopAnimating()
                 self.activityIndicator.hidden = true
                 print("Could not find location")
                 completionHandler(success: false, errorString: error?.description)
@@ -92,5 +109,45 @@ class InfoPostingViewController: UIViewController, UITextViewDelegate {
             textView.textColor = UIColor.lightGrayColor()
         }
         return true
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            textView.resignFirstResponder()
+        }
+        return true
+    }
+    
+    // Move the image screen up based on keyboard height
+    func keyboardWillShow(notification: NSNotification) {
+        view.frame.origin.y -= (getKeyboardHeight(notification)/2)
+    }
+    
+    // Move the image screen down based on keyboard height
+    func keyboardWillHide(notification: NSNotification) {
+        view.frame.origin.y += (getKeyboardHeight(notification)/2)
+    }
+    
+    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
+        return keyboardSize.CGRectValue().height
+    }
+    
+    // Set notifications for whenever the user selects and dismisses the keyboard
+    func subscribeToKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func unsubscribeFromKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:
+            UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:
+            UIKeyboardWillHideNotification, object: nil)
     }
 }
