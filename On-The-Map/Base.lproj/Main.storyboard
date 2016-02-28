@@ -393,7 +393,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5tf-MR-LNQ">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5tf-MR-LNQ">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" red="0.20000000000000001" green="0.40000000000000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -765,9 +765,11 @@
                         <outlet property="mapLocation" destination="sQx-cE-DSn" id="EFW-fX-ZSN"/>
                         <outlet property="mediaURL" destination="phk-ub-SxG" id="JfO-jo-xqM"/>
                         <outlet property="submitButton" destination="eAW-qg-LgT" id="sV5-qw-Kh2"/>
+                        <segue destination="p85-wz-3Bc" kind="unwind" identifier="unwind" unwindAction="myUnwindAction:" id="ZZ1-hc-4Ya"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eTC-4t-ohQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="p85-wz-3Bc" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3517.5" y="428"/>
         </scene>

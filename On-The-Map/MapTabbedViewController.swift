@@ -20,6 +20,8 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
         getMapLocations()
     }
     
+    @IBAction func myUnwindAction(segue: UIStoryboardSegue) {}
+    
     @IBAction func refresh() {
         for annotation : MKAnnotation in mapView.annotations {
             mapView.removeAnnotation(annotation)
@@ -30,8 +32,12 @@ class MapTabbedViewController: UIViewController, MKMapViewDelegate {
     @IBAction func logout(sender: AnyObject) {
         OTMClient.sharedInstance().logoutSession() { (success, errorString) in
             if(success) {
-                let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LoginViewController")
-                self.presentViewController(controller, animated: true, completion: nil)
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.dismissViewControllerAnimated(false, completion: nil)
+                }
+            } else {
+                print("Failed to log out")
+                self.errorAlert("Logout failed")
             }
         }
     }

@@ -86,6 +86,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func configureUI() {
         udacityIcon.hidden = false
+        self.emailTextField.text = ""
+        self.pwdTextFIeld.text = ""
         padTextField(self.emailTextField)
         padTextField(self.pwdTextFIeld)
     }

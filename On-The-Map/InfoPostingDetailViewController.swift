@@ -51,6 +51,7 @@ class InfoPostingDetailViewController: UIViewController, UITextViewDelegate {
                     self.submitLocation()
                 } else {
                     print("Could not find all student values")
+                    self.errorAlert("Unable to get student data. Please try again.")
                 }
             }
         }
@@ -61,8 +62,7 @@ class InfoPostingDetailViewController: UIViewController, UITextViewDelegate {
             if(success) {
                 print("Successfully submitted location")
                 dispatch_async(dispatch_get_main_queue()) {
-                    let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabbedController") as! UITabBarController
-                    self.presentViewController(controller, animated: true, completion: nil)
+                    self.performSegueWithIdentifier("unwind", sender: nil)
                 }
             } else {
                 print("Location submission errored out")
